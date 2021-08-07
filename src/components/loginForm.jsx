@@ -1,37 +1,24 @@
 import React, { Component } from "react";
+import joi from "joi-browser";
+import Form from "./common/form";
 import Input from "./common/input";
-class LoginForm extends Component {
+class LoginForm extends Form {
   state = {
-    account: { username: "", password: "" },
+    data: { username: "", password: "" },
     errors: {},
   };
 
-  validate = () => {
-    const errors = {};
-    const { account } = this.state;
-    if (account.username.trim() === "")
-      errors.username = "Username is required";
-    if (account.password.trim() === "")
-      errors.password = "Password is required";
-
-    return Object.keys(errors).length === 0 ? null : errors;
+  schema = {
+    username: joi.string().required().label("Username"),
+    password: joi.string().required().label("Password"),
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
-    if (errors) return;
-  };
-
-  handleChange = ({ currentTarget: input }) => {
-    const account = { ...this.state.account };
-    account[input.name] = input.value;
-    this.setState({ account });
+  doSubmit = () => {
+    console.log("Submitted!");
   };
 
   render() {
-    const { account, errors } = this.state;
+    const { data, errors } = this.state;
     return (
       <div>
         <h1>Login</h1>
@@ -40,17 +27,19 @@ class LoginForm extends Component {
             name="username"
             label="Username"
             onChange={this.handleChange}
-            value={account.username}
+            value={data.username}
             error={errors.username}
           />
           <Input
             name="password"
             label="Password"
             onChange={this.handleChange}
-            value={account.password}
+            value={data.password}
             error={errors.password}
           />
-          <button className="btn btn-primary">Login</button>
+          <button disabled={this.validate()} className="btn btn-primary">
+            Login
+          </button>
         </form>
       </div>
     );
