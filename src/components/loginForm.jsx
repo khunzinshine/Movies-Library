@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import joi from "joi-browser";
 import Form from "./common/form";
-import Input from "./common/input";
 class LoginForm extends Form {
   state = {
     data: { username: "", password: "" },
@@ -18,28 +17,13 @@ class LoginForm extends Form {
   };
 
   render() {
-    const { data, errors } = this.state;
     return (
       <div>
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <Input
-            name="username"
-            label="Username"
-            onChange={this.handleChange}
-            value={data.username}
-            error={errors.username}
-          />
-          <Input
-            name="password"
-            label="Password"
-            onChange={this.handleChange}
-            value={data.password}
-            error={errors.password}
-          />
-          <button disabled={this.validate()} className="btn btn-primary">
-            Login
-          </button>
+          {this.renderInput("username", "Username")}
+          {this.renderInput("password", "Password", "password")}
+          {this.renderButton("Login")}
         </form>
       </div>
     );
